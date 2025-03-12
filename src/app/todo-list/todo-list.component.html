@@ -1,4 +1,4 @@
-<div class="todo-container">
+<!-- <div class="todo-container">
   <form
     style="
       display: flex;
@@ -50,4 +50,40 @@
   >
     Reset All Tasks
   </button>
+</div> -->
+
+
+
+
+<div class="todo-container">
+  <form [formGroup]="todoForm!" (ngSubmit)="addTodo()" class="todo-form">
+    <div class="form-group">
+      <label for="task-name">Task Name</label>
+      <input id="task-name" formControlName="name" placeholder="Enter task..." />
+    </div>
+    <button type="submit" [disabled]="todoForm!.invalid">Add Task</button>
+  </form>
+    <div> <img src="assets/Tasktodo.webp" alt="No Tasks" width="200" height="150" loading="lazy" decoding="async" /></div>
+  <div class="todos-section">
+    <h3>All Tasks</h3>
+    <div *ngIf="(todos$ | async)?.length === 0" class="empty-message">  
+      <p>No tasks yet. Add a task to get started.</p>
+    </div>
+    <ul class="todo-list">
+      <li *ngFor="let todo of  (todos$ | async) ?? []" class="todo-item" [ngClass]="{ completed: todo.complete }">
+        <span class="todo-name">{{ todo.name }}</span>
+        <div class="todo-actions">
+          <button *ngIf="!todo.complete" (click)="completeTodo(todo.id)" class="complete-btn">
+            ✓
+          </button>
+          <button (click)="removeTodo(todo.id)" class="remove-btn">✕</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <button (click)="resetAllTodos()" class="reset-btn" *ngIf="(todos$ | async)?.length ?? 0 > 0">
+    Reset All Tasks
+  </button>
 </div>
+
